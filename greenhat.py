@@ -17,7 +17,7 @@ def get_date_string(n, startdate):
 # main app
 def main(argv):
 	if len(argv) < 1 or len(argv) > 2:
-		print "Error: Bad input."
+		print("Error: Bad input.")
 		sys.exit(1)
 	n = int(argv[0])
 	if len(argv) == 1:
@@ -29,7 +29,9 @@ def main(argv):
 		curdate = get_date_string(i, startdate)
 		num_commits = randint(1, 10)
 		for commit in range(0, num_commits):
-			subprocess.call("echo '" + curdate + str(randint(0, 1000000)) +"' > realwork.txt; git add realwork.txt; GIT_AUTHOR_DATE='" + curdate + "' GIT_COMMITTER_DATE='" + curdate + "' git commit -m 'update'; git push;", shell=True)
+			message = "'" + subprocess.getoutput('curl -s http://whatthecommit.com/index.txt') + "'"
+			sleep(.5)
+			subprocess.call("echo '" + curdate + str(randint(0, 1000000)) +"' > realwork.txt; git add realwork.txt; GIT_AUTHOR_DATE='" + curdate + "' GIT_COMMITTER_DATE='" + curdate + "' git commit -m " + message + "; git push;", shell=True)
 			sleep(.5)
 		i += 1
 	subprocess.call("git rm realwork.txt; git commit -m 'delete'; git push;", shell=True)
